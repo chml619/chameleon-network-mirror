@@ -162,3 +162,12 @@ impl pallet_template::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = pallet_template::weights::SubstrateWeight<Runtime>;
 }
+
+/// Configure the MEV Protection pallet.
+impl pallet_mev_protection::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+	type MinDelay = ConstU32<2>;
+	type MaxDelay = ConstU32<100>;
+	type MaxCallLength = ConstU32<1024>;
+}
