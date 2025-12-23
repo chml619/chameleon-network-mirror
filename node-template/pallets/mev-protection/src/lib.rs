@@ -55,9 +55,8 @@ pub mod pallet {
     use frame_system::pallet_prelude::*;
     use sp_runtime::traits::{Hash, Saturating};
     
-    // Import Vec from alloc for no_std compatibility
-    extern crate alloc;
-    use alloc::vec::Vec;
+    // Import Vec from sp_runtime for no_std compatibility
+    use sp_runtime::Vec;
 
     /// The current storage version.
     const STORAGE_VERSION: StorageVersion = StorageVersion::new(1);
