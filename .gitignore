@@ -1,3 +1,7 @@
 node-template/target/
 node-template/Cargo.lock
 .DS_Store
+-e 
+# Environment files
+*.env
+*.env.*
