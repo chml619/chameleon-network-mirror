@@ -1,0 +1,38 @@
+[package]
+authors.workspace = true
+description = "Primitives for session keys"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "session-key-primitives"
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+async-trait = { workspace = true, optional = true }
+codec = { workspace = true }
+manta-primitives = { workspace = true }
+nimbus-primitives = { workspace = true }
+scale-info = { workspace = true }
+serde = { workspace = true, optional = true }
+sp-application-crypto = { workspace = true }
+sp-consensus-aura = { workspace = true }
+sp-core = { workspace = true }
+sp-inherents = { workspace = true }
+sp-runtime = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+  "async-trait",
+  "manta-primitives/std",
+  "nimbus-primitives/std",
+  "codec/std",
+  "scale-info/std",
+  "serde",
+  "sp-application-crypto/std",
+  "sp-consensus-aura/std",
+  "sp-core/std",
+  "sp-runtime/std",
+  "sp-inherents/std",
+]

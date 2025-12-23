@@ -1,0 +1,45 @@
+{
+  "name": "manta-tests",
+  "version": "1.0.0",
+  "description": "Functional Tests for Manta",
+  "main": "index.js",
+  "scripts": {
+    "correctness_test": "mocha -r ts-node/register rpc_correctness_test.ts",
+    "performance_test": "mocha -r ts-node/register rpc_performance_test.ts",
+    "stress_benchmark_test": "mocha -r ts-node/register stress_benchmark_test.ts",
+    "runtime_upgrade_test": "mocha -r ts-node/register runtime_upgrade_test.ts",
+    "parachain_lease_test": "mocha -r ts-node/register check_parachain_lease_expiration.ts",
+    "test_farming": "mocha -r ts-node/register test-farming.ts",
+    "reconstruct_pallet_storages": "mocha -r ts-node/register reconstruct_pallet_storages.ts",
+    "tests": "mocha -r ts-node/register --timeout 50000 tests/test-*.ts",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^12.0.1",
+    "@polkadot/api-augment": "^12.0.1",
+    "@polkadot/types": "^12.0.1",
+    "@types/minimist": "^1.2.2",
+    "@types/yargs": "^17.0.0",
+    "big-json": "^3.2.0",
+    "minimist": "^1.2.5",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/chai-as-promised": "^7.1.4",
+    "@types/mocha": "^9.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "8.5.0",
+    "get-port": "^5.1.1",
+    "mocha": "^10.0.0",
+    "mocha-steps": "^1.3.0"
+  }
+}

@@ -1,0 +1,78 @@
+[package]
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "runtime-common"
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+# Substrate dependencies
+frame-support = { workspace = true }
+pallet-transaction-payment = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+xcm = { workspace = true, optional = true }
+
+# Self dependencies
+manta-primitives = { workspace = true }
+
+[dev-dependencies]
+lazy_static = { workspace = true }
+reqwest = { workspace = true }
+serde_json = { workspace = true }
+
+# 3rd dependencies
+codec = { workspace = true }
+scale-info = { workspace = true }
+
+# Substrate dependencies
+frame-system = { workspace = true, features = ["std"] }
+pallet-assets = { workspace = true, features = ["std"] }
+pallet-balances = { workspace = true, features = ["std"] }
+pallet-utility = { workspace = true, features = ["std"] }
+sp-core = { workspace = true, features = ["std"] }
+sp-io = { workspace = true, features = ["std"] }
+sp-std = { workspace = true, features = ["std"] }
+
+# Polkadot dependencies
+pallet-xcm = { workspace = true, features = ["std"] }
+polkadot-core-primitives = { workspace = true, features = ["std"] }
+polkadot-parachain-primitives = { workspace = true, features = ["std"] }
+# polkadot-runtime-parachains removed - pulls polkadot-runtime-common transitively
+# polkadot-runtime-parachains = { workspace = true, features = ["std"] }
+xcm = { workspace = true, features = ["std"] }
+xcm-builder = { workspace = true, features = ["std"] }
+xcm-executor = { workspace = true, features = ["std"] }
+xcm-simulator = { workspace = true }
+
+# Cumulus dependencies
+cumulus-pallet-parachain-system = { workspace = true, features = ["std"] }
+cumulus-pallet-xcm = { workspace = true, features = ["std"] }
+cumulus-pallet-xcmp-queue = { workspace = true, features = ["std"] }
+cumulus-primitives-parachain-inherent = { workspace = true, features = ["std"] }
+cumulus-test-relay-sproof-builder = { workspace = true, features = ["std"] }
+parachain-info = { workspace = true, features = ["std"] }
+
+# Orml dependencies
+orml-traits = { workspace = true, features = ["std"] }
+orml-xtokens = { workspace = true, features = ["std"] }
+
+# Self dependencies
+pallet-asset-manager = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+  "frame-support/std",
+  "manta-primitives/std",
+  "pallet-transaction-payment/std",
+  "sp-runtime/std",
+  "sp-std/std",
+  "xcm/std",
+]
+test-helpers = ["xcm"]
+try-runtime = [
+  "frame-support/try-runtime",
+]

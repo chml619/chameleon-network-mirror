@@ -1,0 +1,339 @@
+[package]
+authors.workspace = true
+build = "build.rs"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = 'calamari-runtime'
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+codec = { workspace = true }
+hex-literal = { workspace = true, optional = true }
+log = { workspace = true }
+scale-info = { workspace = true }
+serde = { workspace = true, optional = true }
+smallvec = { workspace = true }
+
+# Substrate primitives
+frame-metadata-hash-extension = { workspace = true }
+sp-api = { workspace = true }
+sp-application-crypto = { workspace = true }
+sp-arithmetic = { workspace = true }
+sp-block-builder = { workspace = true }
+sp-consensus-aura = { workspace = true }
+sp-core = { workspace = true }
+sp-inherents = { workspace = true }
+sp-io = { workspace = true }
+sp-offchain = { workspace = true }
+sp-runtime = { workspace = true }
+sp-session = { workspace = true }
+sp-std = { workspace = true }
+sp-transaction-pool = { workspace = true }
+sp-version = { workspace = true }
+
+# Substrate frames
+frame-benchmarking = { workspace = true, optional = true }
+frame-executive = { workspace = true }
+frame-metadata = { workspace = true }
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+frame-system-benchmarking = { workspace = true, optional = true }
+frame-system-rpc-runtime-api = { workspace = true }
+frame-try-runtime = { workspace = true, optional = true }
+
+# Substrate pallets
+pallet-assets = { workspace = true }
+pallet-aura = { workspace = true }
+pallet-authorship = { workspace = true }
+pallet-balances = { workspace = true }
+pallet-collective = { workspace = true }
+pallet-democracy = { workspace = true }
+pallet-membership = { workspace = true }
+pallet-message-queue = { workspace = true }
+pallet-multisig = { workspace = true }
+pallet-preimage = { workspace = true }
+pallet-scheduler = { workspace = true }
+pallet-session = { workspace = true }
+pallet-timestamp = { workspace = true }
+pallet-transaction-payment = { workspace = true }
+pallet-transaction-payment-rpc-runtime-api = { workspace = true }
+pallet-treasury = { workspace = true }
+pallet-utility = { workspace = true }
+substrate-fixed = { workspace = true }
+
+pallet-conviction-voting = { workspace = true }
+pallet-ranked-collective = { workspace = true }
+pallet-referenda = { workspace = true }
+
+# Cumulus dependencies
+cumulus-pallet-parachain-system = { workspace = true, features = ["parameterized-consensus-hook"] }
+cumulus-pallet-session-benchmarking = { workspace = true, optional = true }
+cumulus-pallet-xcm = { workspace = true }
+cumulus-pallet-xcmp-queue = { workspace = true }
+cumulus-primitives-core = { workspace = true }
+cumulus-primitives-timestamp = { workspace = true }
+cumulus-primitives-utility = { workspace = true }
+parachain-info = { workspace = true }
+
+# Nimbus Dependencies
+async-backing-primitives = { workspace = true }
+nimbus-primitives = { workspace = true }
+pallet-aura-style-filter = { workspace = true }
+pallet-author-inherent = { workspace = true }
+session-keys-primitives = { workspace = true }
+
+# Polkadot dependencies
+pallet-xcm = { workspace = true }
+pallet-xcm-benchmarks = { workspace = true, optional = true }
+# parachains-common removed - pulls polkadot-runtime-common transitively
+# parachains-common = { workspace = true }
+polkadot-parachain-primitives = { workspace = true }
+polkadot-primitives = { workspace = true }
+# polkadot-runtime-common removed - not used and causes pallet-identity compilation errors
+xcm = { workspace = true }
+xcm-builder = { workspace = true }
+xcm-executor = { workspace = true }
+
+# Self dependencies
+calamari-vesting = { workspace = true }
+manta-collator-selection = { workspace = true }
+manta-primitives = { workspace = true }
+manta-support = { workspace = true }
+pallet-asset-manager = { workspace = true }
+pallet-farming = { workspace = true }
+pallet-farming-rpc-runtime-api = { workspace = true }
+pallet-lottery = { workspace = true }
+pallet-manta-pay = { workspace = true, features = ["runtime"] }
+pallet-manta-sbt = { workspace = true, features = ["runtime"] }
+pallet-name-service = { workspace = true }
+pallet-parachain-staking = { workspace = true }
+pallet-randomness = { workspace = true }
+pallet-tx-pause = { workspace = true }
+runtime-common = { workspace = true }
+session-key-primitives = { workspace = true }
+
+# Third party (vendored) dependencies
+orml-traits = { workspace = true }
+orml-xtokens = { workspace = true }
+
+zenlink-protocol = { workspace = true }
+zenlink-protocol-runtime-api = { workspace = true }
+
+[package.metadata.docs.rs]
+targets = ['x86_64-unknown-linux-gnu']
+
+[build-dependencies]
+substrate-wasm-builder = { workspace = true, optional = true }
+
+[dev-dependencies]
+# Generic 3rd-party dependencies
+csv = { workspace = true }
+lazy_static = { workspace = true }
+reqwest = { workspace = true }
+serde_json = { workspace = true }
+version-compare = { workspace = true }
+
+# Substrate 3rd-party dependencies
+cumulus-primitives-parachain-inherent = { workspace = true }
+cumulus-test-relay-sproof-builder = { workspace = true }
+polkadot-core-primitives = { workspace = true }
+# polkadot-runtime-parachains removed - pulls polkadot-runtime-common transitively
+# polkadot-runtime-parachains = { workspace = true }
+sp-io = { workspace = true }
+xcm-simulator = { workspace = true }
+
+# Self dependencies
+runtime-common = { workspace = true, features = ["std", "test-helpers"] }
+
+[features]
+default = ['std']
+runtime-benchmarks = [
+  'cumulus-pallet-session-benchmarking/runtime-benchmarks',
+  'hex-literal',
+  'sp-runtime/runtime-benchmarks',
+  'xcm-builder/runtime-benchmarks',
+  'frame-benchmarking/runtime-benchmarks',
+  'frame-system-benchmarking/runtime-benchmarks',
+  'frame-support/runtime-benchmarks',
+  'frame-system/runtime-benchmarks',
+  'manta-collator-selection/runtime-benchmarks',
+  'nimbus-primitives/runtime-benchmarks',
+  'pallet-author-inherent/runtime-benchmarks',
+  'pallet-balances/runtime-benchmarks',
+  'pallet-multisig/runtime-benchmarks',
+  'pallet-scheduler/runtime-benchmarks',
+  'pallet-utility/runtime-benchmarks',
+  'pallet-timestamp/runtime-benchmarks',
+  'pallet-xcm/runtime-benchmarks',
+  'pallet-collective/runtime-benchmarks',
+  'pallet-democracy/runtime-benchmarks',
+  'pallet-scheduler/runtime-benchmarks',
+  'pallet-membership/runtime-benchmarks',
+  'calamari-vesting/runtime-benchmarks',
+  'pallet-tx-pause/runtime-benchmarks',
+  'pallet-treasury/runtime-benchmarks',
+  'pallet-parachain-staking/runtime-benchmarks',
+  'pallet-preimage/runtime-benchmarks',
+  'pallet-assets/runtime-benchmarks',
+  'pallet-asset-manager/runtime-benchmarks',
+  'cumulus-pallet-xcmp-queue/runtime-benchmarks',
+  "pallet-randomness/runtime-benchmarks",
+  "pallet-lottery/runtime-benchmarks",
+  'cumulus-pallet-parachain-system/runtime-benchmarks',
+  'pallet-manta-pay/runtime-benchmarks',
+  'pallet-xcm-benchmarks/runtime-benchmarks',
+  'pallet-manta-sbt/runtime-benchmarks',
+  'pallet-name-service/runtime-benchmarks',
+  "zenlink-protocol/runtime-benchmarks",
+  'pallet-farming/runtime-benchmarks',
+  "pallet-conviction-voting/runtime-benchmarks",
+  "pallet-referenda/runtime-benchmarks",
+  "pallet-ranked-collective/runtime-benchmarks",
+  # 'parachains-common/runtime-benchmarks',  # Removed with parachains-common
+]
+try-runtime = [
+  'frame-try-runtime/try-runtime',
+  'frame-executive/try-runtime',
+  'frame-system/try-runtime',
+  'frame-support/try-runtime',
+  'pallet-aura/try-runtime',
+  'pallet-authorship/try-runtime',
+  'pallet-balances/try-runtime',
+  'pallet-parachain-staking/try-runtime',
+  'pallet-preimage/try-runtime',
+  'pallet-scheduler/try-runtime',
+  'pallet-multisig/try-runtime',
+  'pallet-session/try-runtime',
+  'pallet-timestamp/try-runtime',
+  'pallet-transaction-payment/try-runtime',
+  'pallet-utility/try-runtime',
+  'pallet-collective/try-runtime',
+  'pallet-democracy/try-runtime',
+  'pallet-scheduler/try-runtime',
+  'pallet-membership/try-runtime',
+  'pallet-treasury/try-runtime',
+  'pallet-assets/try-runtime',
+  'pallet-tx-pause/try-runtime',
+  'pallet-asset-manager/try-runtime',
+  'pallet-xcm/try-runtime',
+  'runtime-common/try-runtime',
+  'parachain-info/try-runtime',
+  'cumulus-pallet-parachain-system/try-runtime',
+  'cumulus-pallet-xcmp-queue/try-runtime',
+  'pallet-aura-style-filter/try-runtime',
+  'manta-collator-selection/try-runtime',
+  'cumulus-pallet-xcm/try-runtime',
+  'orml-xtokens/try-runtime',
+  'pallet-manta-pay/try-runtime',
+  'calamari-vesting/try-runtime',
+  'pallet-manta-sbt/try-runtime',
+  'pallet-name-service/try-runtime',
+  "zenlink-protocol/try-runtime",
+  'pallet-randomness/try-runtime',
+  'pallet-lottery/try-runtime',
+  "pallet-farming/try-runtime",
+  "pallet-author-inherent/try-runtime",
+]
+# Set timing constants (e.g. session period) to faster versions to speed up testing.
+fast-runtime = []
+std = [
+  'codec/std',
+  'serde/std',
+  'substrate-wasm-builder',
+  'sp-consensus-aura/std',
+  'pallet-aura/std',
+  'sp-api/std',
+  'sp-arithmetic/std',
+  'session-keys-primitives/std',
+  'async-backing-primitives/std',
+  'sp-std/std',
+  'sp-io/std',
+  'sp-core/std',
+  'pallet-scheduler/std',
+  'sp-runtime/std',
+  'pallet-randomness/std',
+  'sp-version/std',
+  'sp-offchain/std',
+  'sp-session/std',
+  'sp-block-builder/std',
+  'pallet-lottery/std',
+  'sp-transaction-pool/std',
+  'sp-inherents/std',
+  'frame-support/std',
+  'frame-executive/std',
+  'frame-metadata/std',
+  "frame-metadata-hash-extension/std",
+  'frame-system/std',
+  'frame-system-rpc-runtime-api/std',
+  'frame-try-runtime/std',
+  'frame-benchmarking/std',
+  'pallet-authorship/std',
+  'pallet-balances/std',
+  'pallet-message-queue/std',
+  'pallet-multisig/std',
+  'pallet-parachain-staking/std',
+  'substrate-fixed/std',
+  'pallet-preimage/std',
+  'pallet-utility/std',
+  'pallet-transaction-payment-rpc-runtime-api/std',
+  'pallet-timestamp/std',
+  'pallet-session/std',
+  'sp-application-crypto/std',
+  'pallet-xcm/std',
+  'pallet-transaction-payment/std',
+  'pallet-collective/std',
+  'pallet-democracy/std',
+  'pallet-membership/std',
+  'manta-primitives/std',
+  'runtime-common/std',
+  'parachain-info/std',
+  'cumulus-pallet-parachain-system/std',
+  "cumulus-pallet-xcmp-queue/std",
+  'cumulus-pallet-xcm/std',
+  'cumulus-primitives-core/std',
+  'cumulus-primitives-timestamp/std',
+  'cumulus-primitives-utility/std',
+  'pallet-author-inherent/std',
+  'pallet-aura-style-filter/std',
+  'session-key-primitives/std',
+  'scale-info/std',
+  'polkadot-parachain-primitives/std',
+  'log/std',
+  'xcm/std',
+  'xcm-builder/std',
+  'xcm-executor/std',
+  'polkadot-primitives/std',
+  # 'parachains-common/std',  # Removed with parachains-common
+  'manta-collator-selection/std',
+  'calamari-vesting/std',
+  'pallet-tx-pause/std',
+  'pallet-treasury/std',
+  'pallet-assets/std',
+  'pallet-asset-manager/std',
+  'orml-traits/std',
+  'orml-xtokens/std',
+  'pallet-manta-pay/std',
+  'pallet-manta-sbt/std',
+  'pallet-name-service/std',
+  'manta-support/std',
+  "zenlink-protocol/std",
+  "zenlink-protocol-runtime-api/std",
+  "pallet-farming/std",
+  "pallet-farming-rpc-runtime-api/std",
+  "pallet-conviction-voting/std",
+  "pallet-referenda/std",
+  "pallet-ranked-collective/std",
+]
+
+# Enable the metadata hash generation in the wasm-builder
+metadata-hash = ["substrate-wasm-builder?/metadata-hash"]
+
+# A feature that should be enabled when the runtime should be build for on-chain
+# deployment. This will disable stuff that shouldn't be part of the on-chain wasm
+# to make it smaller like logging for example.
+on-chain-release-build = [
+  "sp-api/disable-logging",
+  "metadata-hash",
+]

@@ -1,0 +1,150 @@
+// Copyright 2020-2024 Manta Network.
+// This file is part of Manta.
+//
+// Manta is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Manta is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Manta.  If not, see <http://www.gnu.org/licenses/>.
+
+//! XCM Mock Tests
+//! 
+//! DISABLED for standalone devnet - polkadot_runtime_parachains removed to avoid
+//! polkadot-runtime-common dependency which causes pallet-identity compilation errors.
+//! Re-enable when XCM integration tests are needed for parachain deployment.
+
+// Entire module disabled - requires polkadot_runtime_parachains
+#![cfg(all(test, feature = "xcm-integration-tests"))]
+
+pub mod parachain;
+pub mod relay_chain;
+pub mod xcm_tests;
+
+use core::marker::PhantomData;
+use cumulus_primitives_core::ParaId;
+use sp_runtime::{traits::AccountIdConversion, BuildStorage};
+use xcm::latest::prelude::*;
+use xcm_simulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain, TestExt};
+pub const ALICE: sp_runtime::AccountId32 = sp_runtime::AccountId32::new([0u8; 32]);
+pub const INITIAL_BALANCE: u128 = 10_000_000_000_000_000;
+pub const PARA_A_ID: u32 = 1;
+pub const PARA_B_ID: u32 = 2;
+pub const PARA_C_ID: u32 = 3;
+
+decl_test_parachain! {
+    pub struct ParaA {
+        Runtime = parachain::Runtime,
+        XcmpMessageHandler = parachain::MsgQueue,
+        DmpMessageHandler = parachain::MsgQueue,
+        new_ext = para_ext(PARA_A_ID),
+    }
+}
+
+decl_test_parachain! {
+    pub struct ParaB {
+        Runtime = parachain::Runtime,
+        XcmpMessageHandler = parachain::MsgQueue,
+        DmpMessageHandler = parachain::MsgQueue,
+        new_ext = para_ext(PARA_B_ID),
+    }
+}
+
+decl_test_parachain! {
+    pub struct ParaC {
+        Runtime = parachain::Runtime,
+        XcmpMessageHandler = parachain::MsgQueue,
+        DmpMessageHandler = parachain::MsgQueue,
+        new_ext = para_ext(PARA_C_ID),
+    }
+}
+
+decl_test_relay_chain! {
+    pub struct Relay {
+        Runtime = relay_chain::Runtime,
+        RuntimeCall = relay_chain::RuntimeCall,
+        RuntimeEvent = relay_chain::RuntimeEvent,
+        XcmConfig = relay_chain::XcmExecutorConfig,
+        MessageQueue = relay_chain::MessageQueue,
+        System = relay_chain::System,
+        new_ext = relay_ext(),
+    }
+}
+
+decl_test_network! {
+    pub struct MockNet {
+        relay_chain = Relay,
+        parachains = vec![
+            (1, ParaA),
+            (2, ParaB),
+            (3, ParaC),
+        ],
+    }
+}
+
+pub fn para_account_id(id: u32) -> relay_chain::AccountId {
+    ParaId::from(id).into_account_truncating()
+}
+
+pub fn para_ext(para_id: u32) -> sp_io::TestExternalities {
+    use parachain::{MsgQueue, Runtime, System};
+
+    let mut t = frame_system::GenesisConfig::<Runtime>::default()
+        .build_storage()
+        .unwrap();
+
+    pallet_balances::GenesisConfig::<Runtime> {
+        balances: vec![(ALICE, INITIAL_BALANCE)],
+    }
+    .assimilate_storage(&mut t)
+    .unwrap();
+
+    let parachain_info_config = parachain_info::GenesisConfig {
+        parachain_id: para_id.into(),
+        _config: PhantomData::<Runtime>,
+    };
+    parachain_info::GenesisConfig::<Runtime>::assimilate_storage(&parachain_info_config, &mut t)
+        .unwrap();
+
+    let mut ext = sp_io::TestExternalities::new(t);
+    ext.execute_with(|| {
+        System::set_block_number(1);
+        MsgQueue::set_para_id(para_id.into());
+    });
+    ext
+}
+
+pub fn relay_ext() -> sp_io::TestExternalities {
+    use relay_chain::{Runtime, System};
+
+    let mut t = frame_system::GenesisConfig::<Runtime>::default()
+        .build_storage()
+        .unwrap();
+
+    pallet_balances::GenesisConfig::<Runtime> {
+        balances: vec![
+            (ALICE, INITIAL_BALANCE),
+            (para_account_id(1), INITIAL_BALANCE),
+        ],
+    }
+    .assimilate_storage(&mut t)
+    .unwrap();
+
+    let mut ext = sp_io::TestExternalities::new(t);
+    ext.execute_with(|| System::set_block_number(1));
+    ext
+}
+
+pub type RelayChainPalletXcm = pallet_xcm::Pallet<relay_chain::Runtime>;
+pub type RelayBalances = pallet_balances::Pallet<relay_chain::Runtime>;
+pub type ParachainPalletXcm = pallet_xcm::Pallet<parachain::Runtime>;
+
+frame_support::parameter_types! {
+    pub ReachableDest: Option<MultiLocation> = Some(Parent.into());
+}

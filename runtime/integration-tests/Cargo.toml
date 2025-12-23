@@ -1,0 +1,89 @@
+[package]
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "integration-tests"
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+calamari-runtime = { workspace = true, optional = true, features = ["std"] }
+cfg-if = { workspace = true }
+manta-runtime = { workspace = true, optional = true, features = ["std"] }
+
+[dev-dependencies]
+codec = { workspace = true }
+frame-metadata = { workspace = true, features = ["std"] }
+frame-support = { workspace = true, features = ["std"] }
+frame-system = { workspace = true, features = ["std"] }
+lazy_static = { workspace = true }
+pallet-assets = { workspace = true, features = ["std"] }
+pallet-balances = { workspace = true, features = ["std"] }
+pallet-collective = { workspace = true, features = ["std"] }
+pallet-democracy = { workspace = true, features = ["std"] }
+pallet-membership = { workspace = true, features = ["std"] }
+pallet-message-queue = { workspace = true, features = ["std"] }
+pallet-scheduler = { workspace = true, features = ["std"] }
+pallet-session = { workspace = true, features = ["std"] }
+pallet-transaction-payment = { workspace = true, features = ["std"] }
+pallet-utility = { workspace = true, features = ["std"] }
+pallet-xcm = { workspace = true, features = ["std"] }
+scale-info = { workspace = true }
+sp-arithmetic = { workspace = true, features = ["std"] }
+sp-core = { workspace = true, features = ["std"] }
+sp-io = { workspace = true, features = ["std"] }
+sp-runtime = { workspace = true, features = ["std"] }
+sp-std = { workspace = true, features = ["std"] }
+xcm = { workspace = true }
+xcm-builder = { workspace = true }
+xcm-executor = { workspace = true }
+
+# parachains-common and polkadot-runtime-parachains removed - pull polkadot-runtime-common
+# parachains-common = { workspace = true, features = ["std"] }
+polkadot-core-primitives = { workspace = true, features = ["std"] }
+polkadot-parachain-primitives = { workspace = true, features = ["std"] }
+# polkadot-runtime-common removed - not used and causes pallet-identity compilation errors
+# polkadot-runtime-parachains = { workspace = true, features = ["std"] }
+xcm-simulator = { workspace = true }
+
+# Cumulus dependencies
+cumulus-pallet-parachain-system = { workspace = true, features = ["std"] }
+cumulus-pallet-xcm = { workspace = true, features = ["std"] }
+cumulus-pallet-xcmp-queue = { workspace = true, features = ["std"] }
+cumulus-primitives-core = { workspace = true, features = ["std"] }
+cumulus-primitives-parachain-inherent = { workspace = true, features = ["std"] }
+cumulus-test-relay-sproof-builder = { workspace = true, features = ["std"] }
+parachain-info = { workspace = true, features = ["std"] }
+
+# Orml dependencies
+orml-traits = { workspace = true, features = ["std"] }
+orml-xcm-support = { workspace = true, features = ["std"] }
+orml-xtokens = { workspace = true, features = ["std"] }
+
+# Self dependencies
+calamari-vesting = { workspace = true, features = ["std"] }
+manta-collator-selection = { workspace = true, features = ["std"] }
+pallet-asset-manager = { workspace = true, features = ["std"] }
+pallet-manta-pay = { workspace = true, features = ["std"] }
+pallet-manta-sbt = { workspace = true, features = ["std"] }
+pallet-parachain-staking = { workspace = true, features = ["std"] }
+pallet-tx-pause = { workspace = true, features = ["std"] }
+
+manta-primitives = { workspace = true, features = ["std"] }
+manta-support = { workspace = true, features = ["std"] }
+nimbus-primitives = { workspace = true, features = ["std"] }
+runtime-common = { workspace = true, features = ["std", "test-helpers"] }
+session-key-primitives = { workspace = true, features = ["std"] }
+
+[features]
+calamari = [
+  "dep:calamari-runtime",
+]
+default = ["manta"]
+manta = [
+  "dep:manta-runtime",
+]
+runtime-benchmarks = [
+  "pallet-assets/runtime-benchmarks",
+]
