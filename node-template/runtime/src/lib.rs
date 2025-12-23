@@ -225,4 +225,8 @@ mod runtime {
 	// Include the custom logic from the pallet-template in the runtime.
 	#[runtime::pallet_index(7)]
 	pub type Template = pallet_template;
+
+	// MEV Protection pallet for preventing front-running attacks.
+	#[runtime::pallet_index(8)]
+	pub type MEVProtection = pallet_mev_protection;
 }
