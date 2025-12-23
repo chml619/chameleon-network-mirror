@@ -187,7 +187,7 @@ pub mod pallet {
 
             // Validate call size
             ensure!(
-                encrypted_call.len() <= T::MaxCallLength::get().try_into().unwrap_or(0usize),
+                (encrypted_call.len() as u32) <= T::MaxCallLength::get(),
                 Error::<T>::CallTooLarge
             );
 
